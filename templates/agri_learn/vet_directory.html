@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+{% block title %}Vet Directory{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="fw-bold mb-1">🩺 Vet Directory</h2>
+  <p class="text-muted mb-4">Licensed veterinary officers available for farm visits</p>
+
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-md-3">
+      <select name="county" class="form-select">
+        <option value="nairobi" {% if county == "nairobi" %}selected{% endif %}>Nairobi</option>
+        <option value="kiambu" {% if county == "kiambu" %}selected{% endif %}>Kiambu</option>
+        <option value="kajiado" {% if county == "kajiado" %}selected{% endif %}>Kajiado</option>
+      </select>
+    </div>
+    <div class="col-md-2"><button type="submit" class="btn btn-outline-success w-100">Search</button></div>
+  </form>
+
+  {% if vets %}
+  <div class="row g-3">
+    {% for v in vets %}
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm p-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="fw-bold mb-0">Dr. {{ v.name }}</h6>
+            <small class="text-muted">{{ v.designation }}</small>
+          </div>
+          {% if v.dvs_registered %}<span class="badge-verified">DVS Registered</span>{% endif %}
+        </div>
+        <p class="small text-muted mt-2 mb-1"><i class="bi bi-geo-alt me-1"></i>{{ v.sub_location|default:v.county }}</p>
+        <p class="small mb-1"><i class="bi bi-telephone me-1"></i><a href="tel:{{ v.phone }}">{{ v.phone }}</a></p>
+        {% if v.specialisation %}<p class="small text-muted mb-1">Specialises in: {{ v.specialisation }}</p>{% endif %}
+        {% if v.available_for_farm_visits %}<span class="badge bg-success">Farm visits available</span>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-muted">No vets listed for this county yet. Contact admin to add.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+{% block title %}Market Prices{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="fw-bold mb-1">📊 Nairobi Egg Market Prices</h2>
+  <p class="text-muted mb-4">Current prices observed across Nairobi markets</p>
+  {% if prices %}
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr><th>Location</th><th>Grade</th><th>Price/tray</th><th>Date</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          {% for p in prices %}
+          <tr>
+            <td>{{ p.location }}</td>
+            <td>Grade {{ p.grade }}</td>
+            <td><span class="price-badge">KES {{ p.price_per_tray }}</span></td>
+            <td class="text-muted small">{{ p.date_observed|date:"d M Y" }}</td>
+            <td class="text-muted small">{{ p.source }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No market prices yet. Admin can add them via the admin panel.</p>
+  {% endif %}
+</div>
+{% endblock %}

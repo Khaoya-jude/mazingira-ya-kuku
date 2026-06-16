@@ -1,0 +1,13 @@
+Django>=5.1,<5.2
+Pillow>=11.0.0
+django-crispy-forms==2.1
+crispy-bootstrap5==0.7
+django-environ==0.11.2
+whitenoise==6.7.0
+django-simple-history==3.7.0
+django-phonenumber-field==7.3.0
+phonenumbers==8.13.46
+qrcode==7.4.2
+djangorestframework==3.15.2
+django-filter==24.2
+africastalking==1.2.9

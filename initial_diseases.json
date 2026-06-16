@@ -1,0 +1,72 @@
+[
+  {
+    "model": "farm_guard.disease",
+    "pk": 1,
+    "fields": {
+      "name": "Newcastle Disease",
+      "swahili_name": "Mdomonyo wa Kuku",
+      "description": "Highly contagious viral disease affecting all poultry. One of the biggest threats to Nairobi egg farmers. Spreads rapidly between flocks.",
+      "symptoms": "Sudden death,Twisted neck,Sneezing / coughing,Green diarrhoea,Reduced egg production,Loss of appetite,Paralysis,Ruffled feathers",
+      "prevention": "Vaccinate with La Sota strain at day 14 and booster at week 4. Maintain strict biosecurity. Only buy chicks from certified hatcheries.",
+      "treatment": "No cure — supportive care only. Isolate infected birds immediately. Report to county vet. Cull severely affected birds.",
+      "emergency_level": "critical",
+      "image": ""
+    }
+  },
+  {
+    "model": "farm_guard.disease",
+    "pk": 2,
+    "fields": {
+      "name": "Avian Influenza (Bird Flu)",
+      "swahili_name": "Mafua ya Kuku",
+      "description": "Notifiable disease. Must be reported to county veterinary office immediately. Can spread to humans (rare but serious).",
+      "symptoms": "Sudden death,Swollen face,Mucus discharge,Sneezing / coughing,Blood in droppings,Reduced egg production,Pale comb",
+      "prevention": "Strict biosecurity — no wild birds near farm. Disinfect all equipment. Restrict farm access. Buy from certified sources only.",
+      "treatment": "IMMEDIATELY contact county vet. Notify DVS Kenya. Do not move birds. Do not sell eggs from infected flock.",
+      "emergency_level": "critical",
+      "image": ""
+    }
+  },
+  {
+    "model": "farm_guard.disease",
+    "pk": 3,
+    "fields": {
+      "name": "Marek's Disease",
+      "swahili_name": "Ugonjwa wa Marek",
+      "description": "Viral disease causing tumours and paralysis. Common in layers. Vaccination at hatch is the only effective control.",
+      "symptoms": "Paralysis,Twisted neck,Loss of appetite,Ruffled feathers,Pale comb",
+      "prevention": "Vaccinate day-old chicks before leaving hatchery. Buy pre-vaccinated chicks from certified hatcheries only.",
+      "treatment": "No cure. Remove paralysed birds. Cull affected stock to prevent spread.",
+      "emergency_level": "high",
+      "image": ""
+    }
+  },
+  {
+    "model": "farm_guard.disease",
+    "pk": 4,
+    "fields": {
+      "name": "Coccidiosis",
+      "swahili_name": "Matumbo Mekundu",
+      "description": "Parasitic gut disease — most common in young birds under 6 weeks. Caused by dirty, damp litter.",
+      "symptoms": "Blood in droppings,Diarrhoea,Loss of appetite,Ruffled feathers,Reduced egg production",
+      "prevention": "Keep litter dry. Avoid overcrowding. Medicate feed or water with coccidiostat. Clean drinkers daily.",
+      "treatment": "Treat with Amprolium (Amprol) in drinking water for 5 days. Supportive vitamins A and K.",
+      "emergency_level": "medium",
+      "image": ""
+    }
+  },
+  {
+    "model": "farm_guard.disease",
+    "pk": 5,
+    "fields": {
+      "name": "Infectious Bronchitis",
+      "swahili_name": "Mafua ya Kupumua",
+      "description": "Highly contagious respiratory virus. Major cause of reduced egg production and poor shell quality in layers.",
+      "symptoms": "Sneezing / coughing,Mucus discharge,Reduced egg production,Loss of appetite",
+      "prevention": "Vaccinate at 1 and 4 weeks with IB vaccine. Good ventilation in housing. All-in all-out flock management.",
+      "treatment": "Supportive care — antibiotics to prevent secondary bacterial infection. Vitamins to boost immunity.",
+      "emergency_level": "high",
+      "image": ""
+    }
+  }
+]

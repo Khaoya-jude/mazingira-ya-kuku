@@ -1,0 +1,70 @@
+{% extends "base/base.html" %}
+{% block title %}Egg Listings — EggMarket{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-0">🥚 Egg Market</h2>
+      <p class="text-muted mb-0">Buy directly from Nairobi egg farmers — no middlemen</p>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'egg_market:create_listing' %}" class="btn btn-success">+ List my eggs</a>
+    {% endif %}
+  </div>
+
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-md-3">
+      <select name="grade" class="form-select">
+        <option value="">All grades</option>
+        {% for val, label in grade_choices %}
+        <option value="{{ val }}" {% if grade == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="county" class="form-select">
+        <option value="nairobi" {% if county == "nairobi" %}selected{% endif %}>Nairobi</option>
+        <option value="kiambu" {% if county == "kiambu" %}selected{% endif %}>Kiambu</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-outline-success w-100">Filter</button>
+    </div>
+    <div class="col-md-2">
+      <a href="{% url 'egg_market:market_prices' %}" class="btn btn-outline-secondary w-100">📊 Market prices</a>
+    </div>
+  </form>
+
+  {% if listings %}
+  <div class="row g-3">
+    {% for l in listings %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-3">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <span class="badge bg-light text-dark border">Grade {{ l.grade }}</span>
+            <span class="price-badge">KES {{ l.price_per_tray }}/tray</span>
+          </div>
+          <h6 class="fw-bold mb-1">{{ l.quantity_trays }} trays available</h6>
+          <p class="text-muted small mb-1"><i class="bi bi-geo-alt me-1"></i>{{ l.pickup_location }}</p>
+          <p class="text-muted small mb-2">
+            Available: {{ l.available_from|date:"d M" }} – {{ l.available_until|date:"d M" }}
+            {% if l.delivery_available %}<span class="badge bg-info text-dark ms-1">Delivery</span>{% endif %}
+          </p>
+          <p class="small text-muted mb-3">Farmer: {{ l.farmer.get_full_name|default:l.farmer.username }}</p>
+          <a href="{% url 'egg_market:listing_detail' l.pk %}" class="btn btn-sm btn-outline-success w-100">View & inquire</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5 text-muted">
+    <p class="fs-5">No listings in this area yet.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'egg_market:create_listing' %}" class="btn btn-success">List your eggs →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

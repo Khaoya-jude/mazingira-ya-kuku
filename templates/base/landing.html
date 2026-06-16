@@ -1,0 +1,129 @@
+{% extends "base/base.html" %}
+{% block title %}Mazingira ya Kuku — Nairobi Poultry Hub{% endblock %}
+{% block content %}
+
+<!-- Hero -->
+<section style="background: linear-gradient(135deg, #1B6B3A 60%, #28a54e); color:#fff; padding: 5rem 0 4rem;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <h1 class="display-4 fw-bold mb-3">Run a smarter<br>egg farm in Nairobi</h1>
+        <p class="lead mb-4" style="color:#b8e0c4;">
+          Track feed prices, sell eggs directly to buyers, get disease alerts before outbreaks hit you,
+          and find verified suppliers — all in one place.
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="{% url 'accounts:register' %}" class="btn btn-warning btn-lg px-4">Join Free — Jiunge Bure</a>
+          <a href="{% url 'farm_guard:alerts' %}" class="btn btn-outline-light btn-lg px-4">
+            <i class="bi bi-shield-exclamation me-1"></i> See Disease Alerts
+          </a>
+        </div>
+        <p class="mt-3 small" style="color:#8dc9a4;">No data plan? SMS HELP to 0800 XXX XXX</p>
+      </div>
+      <div class="col-lg-5 text-center mt-4 mt-lg-0">
+        <div style="font-size: 8rem;">🐔</div>
+        <div class="d-flex justify-content-center gap-3 mt-2">
+          <span class="badge bg-light text-dark px-3 py-2">📊 Feed prices today</span>
+          <span class="badge bg-light text-dark px-3 py-2">🔔 3 active alerts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem callout -->
+<section class="py-4" style="background:#fff3cd; border-bottom: 1px solid #ffe08a;">
+  <div class="container">
+    <div class="row text-center g-3">
+      <div class="col-md-3"><strong>85–90%</strong> of costs is feed</div>
+      <div class="col-md-3"><strong>42–54% more</strong> for feed than South Africa</div>
+      <div class="col-md-3"><strong>KES 5B</strong> in annual egg imports</div>
+      <div class="col-md-3"><strong>3M+</strong> small farmers, little support</div>
+    </div>
+  </div>
+</section>
+
+<!-- Modules -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-2">Everything you need on one platform</h2>
+    <p class="text-center text-muted mb-5">Designed for Nairobi peri-urban farmers. Works on any smartphone.</p>
+    <div class="row g-4">
+
+      <div class="col-md-6 col-lg-4">
+        <div class="module-card p-4 h-100">
+          <div class="module-icon mb-3">🌽</div>
+          <h5 class="fw-bold">FeedWatch</h5>
+          <p class="text-muted">Crowdsourced feed prices from farmers across Nairobi. Compare suppliers, join bulk-buy groups to save 10–20%.</p>
+          <a href="{% url 'feed_watch:prices' %}" class="btn btn-sm btn-outline-success">See prices →</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="module-card p-4 h-100">
+          <div class="module-icon mb-3">🥚</div>
+          <h5 class="fw-bold">EggMarket</h5>
+          <p class="text-muted">Post your eggs, connect directly with hotels, schools, and retailers. No middlemen. Better prices for you.</p>
+          <a href="{% url 'egg_market:listings' %}" class="btn btn-sm btn-outline-success">Browse listings →</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="module-card p-4 h-100">
+          <div class="module-icon mb-3">🛡️</div>
+          <h5 class="fw-bold">FarmGuard</h5>
+          <p class="text-muted">Real-time disease outbreak map. Report sick birds, get SMS alerts before outbreaks spread to your farm.</p>
+          <a href="{% url 'farm_guard:alerts' %}" class="btn btn-sm btn-outline-danger">Check alerts →</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="module-card p-4 h-100">
+          <div class="module-icon mb-3">✅</div>
+          <h5 class="fw-bold">TrustShop</h5>
+          <p class="text-muted">Scan a QR code to verify if your vaccine or feed is genuine. Find KEBS-registered, DVS-approved suppliers only.</p>
+          <a href="{% url 'trust_shop:directory' %}" class="btn btn-sm btn-outline-success">Verify supplier →</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="module-card p-4 h-100">
+          <div class="module-icon mb-3">📚</div>
+          <h5 class="fw-bold">AgriLearn</h5>
+          <p class="text-muted">Extension knowledge in plain English and Kiswahili. Ask a licensed vet a question. SMS-ready tips for offline areas.</p>
+          <a href="{% url 'agri_learn:articles' %}" class="btn btn-sm btn-outline-success">Learn now →</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="module-card p-4 h-100" style="background:#f0f9f4;">
+          <div class="module-icon mb-3">📊</div>
+          <h5 class="fw-bold">My Farm Dashboard</h5>
+          <p class="text-muted">Log weekly production, track profit/loss, monitor feed cost per egg. Simple records you can actually use.</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'dashboard_root:home' %}" class="btn btn-sm btn-success">Go to dashboard →</a>
+          {% else %}
+          <a href="{% url 'accounts:register' %}" class="btn btn-sm btn-success">Join to access →</a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SMS CTA -->
+<section class="py-5" style="background:#1B6B3A; color:#fff;">
+  <div class="container text-center">
+    <h3 class="fw-bold">No smartphone? No problem.</h3>
+    <p class="lead mb-4">All disease alerts are available via SMS — free to all Kenyan farmers.</p>
+    <div class="row justify-content-center g-3">
+      <div class="col-md-3"><div class="p-3 rounded" style="background:#2d8a52;"><strong>ALERT</strong><br><small>Get latest disease alerts</small></div></div>
+      <div class="col-md-3"><div class="p-3 rounded" style="background:#2d8a52;"><strong>PRICE</strong><br><small>Today's egg market price</small></div></div>
+      <div class="col-md-3"><div class="p-3 rounded" style="background:#2d8a52;"><strong>FEED</strong><br><small>Nearest cheap feed price</small></div></div>
+    </div>
+    <p class="mt-4 small" style="color:#8dc9a4;">SMS any keyword to <strong>0800 XXX XXX</strong> (toll-free, all networks)</p>
+  </div>
+</section>
+
+{% endblock %}

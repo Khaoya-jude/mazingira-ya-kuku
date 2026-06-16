@@ -1,0 +1,57 @@
+{% extends "base/base.html" %}
+{% block title %}Symptom Checker — FarmGuard{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <h2 class="fw-bold mb-1">🩺 Symptom Checker</h2>
+      <p class="text-muted mb-4">Select what you're seeing in your flock — we'll suggest the most likely disease.</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="card border-0 shadow-sm p-4 mb-4">
+          <h6 class="fw-bold mb-3">What symptoms are you seeing?</h6>
+          <div class="row g-2">
+            {% for symptom in symptom_options %}
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="symptoms" value="{{ symptom }}" id="s{{ forloop.counter }}">
+                <label class="form-check-label" for="s{{ forloop.counter }}">{{ symptom }}</label>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <button type="submit" class="btn btn-warning mt-4 px-4">Check symptoms</button>
+        </div>
+      </form>
+
+      {% if result %}
+      <div class="card border-0 shadow-sm p-4 mb-4" style="border-left: 4px solid {% if result.emergency_level == 'critical' %}#dc3545{% elif result.emergency_level == 'high' %}#E07B2A{% else %}#1B6B3A{% endif %} !important;">
+        <h5 class="fw-bold">Most likely: {{ result.name }}</h5>
+        {% if result.swahili_name %}<p class="text-muted small mb-2">Kiswahili: {{ result.swahili_name }}</p>{% endif %}
+        <span class="badge {% if result.emergency_level == 'critical' %}bg-danger{% elif result.emergency_level == 'high' %}bg-warning text-dark{% else %}bg-success{% endif %} mb-3">
+          {{ result.get_emergency_level_display }} priority
+        </span>
+        <p>{{ result.description }}</p>
+        <h6 class="fw-bold">Prevention</h6>
+        <p class="text-muted">{{ result.prevention }}</p>
+        <h6 class="fw-bold">What to do now</h6>
+        <p class="text-muted">{{ result.treatment }}</p>
+        <div class="alert alert-warning mt-3 mb-0">
+          <strong>⚠️ Important:</strong> This is a guide only. Always consult a licensed vet for a confirmed diagnosis.
+          <a href="{% url 'agri_learn:vets' %}" class="btn btn-sm btn-warning ms-2">Find a vet →</a>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if result and result.emergency_level in "critical,high" %}
+      <div class="card border-0 p-3 mb-3" style="background:#fff0f0;">
+        <strong>🚨 Report this outbreak</strong>
+        <p class="small text-muted mb-2">Alert neighbouring farmers so they can take precautions.</p>
+        <a href="{% url 'farm_guard:report_alert' %}" class="btn btn-sm btn-danger">Report outbreak →</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

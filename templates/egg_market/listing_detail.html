@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% block title %}Egg Listing Detail{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-7">
+      <h2 class="fw-bold mb-1">🥚 {{ listing.quantity_trays }} trays — Grade {{ listing.grade }}</h2>
+      <p class="text-muted mb-4">Listed by {{ listing.farmer.get_full_name|default:listing.farmer.username }}</p>
+      <div class="card border-0 shadow-sm p-4 mb-4">
+        <div class="row g-3">
+          <div class="col-6"><strong>Price</strong><div>KES {{ listing.price_per_tray }} per tray</div></div>
+          <div class="col-6"><strong>County</strong><div>{{ listing.county|capfirst }}</div></div>
+          <div class="col-6"><strong>Available from</strong><div>{{ listing.available_from|date:"d M Y" }}</div></div>
+          <div class="col-6"><strong>Available until</strong><div>{{ listing.available_until|date:"d M Y" }}</div></div>
+          <div class="col-12"><strong>Pickup location</strong><div>{{ listing.pickup_location }}</div></div>
+          {% if listing.delivery_available %}<div class="col-12"><span class="badge bg-info text-dark">Delivery available</span></div>{% endif %}
+          {% if listing.description %}<div class="col-12"><strong>Notes</strong><div class="text-muted">{{ listing.description }}</div></div>{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card border-0 shadow-sm p-4">
+        <h5 class="fw-bold mb-3">Send inquiry to farmer</h5>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Your name</label>
+            <input type="text" name="buyer_name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">You are a</label>
+            <select name="buyer_type" class="form-select" required>
+              {% for val, label in buyer_types %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Your phone</label>
+            <input type="tel" name="buyer_phone" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Trays needed</label>
+            <input type="number" name="trays_requested" class="form-control" min="1" value="1" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Message (optional)</label>
+            <textarea name="message" class="form-control" rows="2"></textarea>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Send inquiry</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base/base.html" %}
+{% block title %}Ask an Expert{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="fw-bold mb-1">❓ Ask an Expert</h2>
+      <p class="text-muted mb-4">Submit your question — a licensed vet will answer within 48 hours.</p>
+
+      {% if user.is_authenticated %}
+      <div class="card border-0 shadow-sm p-4 mb-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Your question</label>
+            <textarea name="question" class="form-control" rows="4" placeholder="e.g. My layers stopped laying for 3 days. They look healthy but production dropped 30%. What could cause this?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Submit question</button>
+        </form>
+      </div>
+      {% else %}
+      <div class="alert alert-info mb-4">
+        <a href="{% url 'accounts:login' %}">Login</a> or <a href="{% url 'accounts:register' %}">register</a> to ask a question.
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="col-md-6">
+      <h5 class="fw-bold mb-3">Recently answered questions</h5>
+      {% if questions %}
+        {% for q in questions %}
+        <div class="card border-0 shadow-sm p-3 mb-3">
+          <p class="fw-semibold mb-2">{{ q.question|truncatechars:150 }}</p>
+          <p class="text-muted small mb-1">Answered by: {% if q.answered_by %}Dr. {{ q.answered_by.name }}{% else %}Platform team{% endif %}</p>
+          <p class="mb-0">{{ q.answer|truncatechars:200 }}</p>
+        </div>
+        {% endfor %}
+      {% else %}
+      <p class="text-muted">No answered questions yet. Be the first to ask!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

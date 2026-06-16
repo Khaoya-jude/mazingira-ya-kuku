@@ -1,0 +1,109 @@
+{% extends "base/base.html" %}
+{% block title %}Feed Prices — FeedWatch{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-0">🌽 Feed Prices</h2>
+      <p class="text-muted mb-0">Crowdsourced from farmers across Nairobi</p>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'feed_watch:submit_price' %}" class="btn btn-success">+ Submit price</a>
+    {% endif %}
+  </div>
+
+  <!-- Filters -->
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+      <select name="county" class="form-select">
+        <option value="nairobi" {% if county == "nairobi" %}selected{% endif %}>Nairobi</option>
+        <option value="kiambu" {% if county == "kiambu" %}selected{% endif %}>Kiambu</option>
+        <option value="kajiado" {% if county == "kajiado" %}selected{% endif %}>Kajiado</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select name="feed_type" class="form-select">
+        {% for val, label in feed_type_choices %}
+        <option value="{{ val }}" {% if feed_type == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-outline-success w-100">Filter</button>
+    </div>
+  </form>
+
+  <!-- Stats -->
+  {% if stats.avg %}
+  <div class="row g-3 mb-4">
+    <div class="col-4"><div class="card border-0 text-center p-3" style="background:#f0f9f4;"><div class="small text-muted">Lowest</div><strong style="color:#1B6B3A;">KES {{ stats.low|floatformat:0 }}</strong></div></div>
+    <div class="col-4"><div class="card border-0 text-center p-3" style="background:#fff8f0;"><div class="small text-muted">Average</div><strong style="color:#E07B2A;">KES {{ stats.avg|floatformat:0 }}</strong></div></div>
+    <div class="col-4"><div class="card border-0 text-center p-3" style="background:#fff0f0;"><div class="small text-muted">Highest</div><strong style="color:#dc3545;">KES {{ stats.high|floatformat:0 }}</strong></div></div>
+  </div>
+  {% endif %}
+
+  <!-- Price list -->
+  {% if prices %}
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr><th>Feed type</th><th>Brand</th><th>Location</th><th>Price/50kg</th><th>Date</th><th>Votes</th></tr>
+        </thead>
+        <tbody>
+          {% for p in prices %}
+          <tr>
+            <td>{{ p.get_feed_type_display }}</td>
+            <td class="text-muted">{{ p.brand|default:"—" }}</td>
+            <td>{{ p.location }}</td>
+            <td><span class="price-badge">KES {{ p.price_per_50kg|floatformat:0 }}</span></td>
+            <td class="text-muted small">{{ p.date_observed|date:"d M" }}</td>
+            <td class="text-muted small">{{ p.upvotes }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center py-5 text-muted">
+    <p class="fs-5">No prices submitted yet for this area.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'feed_watch:submit_price' %}" class="btn btn-success">Be the first to submit →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Bulk buy groups -->
+  {% if bulk_groups %}
+  <h4 class="fw-bold mt-5 mb-3">🤝 Open bulk-buy groups near you</h4>
+  <div class="row g-3">
+    {% for g in bulk_groups %}
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm p-3">
+        <div class="d-flex justify-content-between">
+          <strong>{{ g.get_feed_type_display }}</strong>
+          <span class="badge bg-success">{{ g.spots_left }} spots left</span>
+        </div>
+        <div class="text-muted small mt-1">{{ g.pickup_location }} · {{ g.target_date|date:"d M Y" }}</div>
+        <div class="text-muted small">Est. saving: {{ g.estimated_saving_pct }}%</div>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'feed_watch:join_bulk' g.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="bags_needed" value="1">
+          <button type="submit" class="btn btn-sm btn-outline-success mt-2">Join group</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="mt-3">
+    <a href="{% url 'feed_watch:bulk_buy' %}" class="btn btn-outline-success">See all bulk-buy groups →</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'feed_watch:create_bulk' %}" class="btn btn-outline-secondary ms-2">Organise a group</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
